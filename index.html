@@ -6,7 +6,6 @@
     <title>AegisTrade AI - إشارات التداول</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --primary-gold: #FFD700;
@@ -351,7 +350,7 @@
         }
         
         /* Form Elements */
-        input, button {
+        input, button, select {
             width: 100%;
             padding: clamp(12px, 3vw, 18px);
             margin: clamp(8px, 2vw, 12px) 0;
@@ -362,7 +361,7 @@
             font-family: inherit;
         }
         
-        input {
+        input, select {
             background: rgba(30, 41, 59, 0.8);
             color: var(--text-primary);
             border: 2px solid var(--border-color);
@@ -370,13 +369,13 @@
             backdrop-filter: blur(10px);
         }
         
-        input:focus {
+        input:focus, select:focus {
             border-color: var(--primary-gold);
             box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
             background: rgba(30, 41, 59, 0.9);
         }
         
-        input::placeholder {
+        input::placeholder, select::placeholder {
             color: var(--text-muted);
             opacity: 0.8;
         }
@@ -874,6 +873,105 @@
             border-top: 1px solid var(--border-color);
         }
 
+        /* Currency Selector */
+        .currency-selector {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(10px, 2.5vw, 15px);
+            margin-top: clamp(20px, 4vw, 25px);
+        }
+        
+        .currency-selector label {
+            text-align: right;
+            font-size: clamp(0.9rem, 2.2vw, 1.05rem);
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .currency-selector select {
+            background: rgba(30, 41, 59, 0.8);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+            padding: clamp(12px, 3vw, 18px);
+            border-radius: var(--border-radius-md);
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            cursor: pointer;
+            transition: var(--transition-medium);
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23FFD700' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right clamp(12px, 3vw, 18px) center;
+            background-size: clamp(12px, 2.5vw, 16px);
+        }
+        
+        .currency-selector select:focus {
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+            background: rgba(30, 41, 59, 0.9);
+        }
+        
+        .currency-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(10px, 2.5vw, 15px);
+            margin-top: clamp(15px, 3vw, 20px);
+            padding: clamp(10px, 2.5vw, 15px);
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: var(--border-radius-md);
+            border: 1px solid var(--border-color);
+        }
+        
+        .currency-icon {
+            width: clamp(50px, 10vw, 70px);
+            height: clamp(50px, 10vw, 70px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid var(--primary-gold);
+        }
+        
+        .currency-name {
+            font-size: clamp(1.2rem, 3vw, 1.6rem);
+            font-weight: 600;
+            color: var(--primary-gold);
+        }
+        
+        .currency-desc {
+            font-size: clamp(0.8rem, 2vw, 0.95rem);
+            color: var(--text-secondary);
+            margin-top: clamp(3px, 1vw, 5px);
+        }
+
+        /* Control Buttons */
+        .control-buttons {
+            display: flex;
+            gap: clamp(10px, 2.5vw, 15px);
+            margin: clamp(15px, 3vw, 20px) 0;
+        }
+        
+        .control-buttons button {
+            flex: 1;
+            padding: clamp(12px, 3vw, 18px);
+            font-size: clamp(0.9rem, 2.2vw, 1rem);
+        }
+        
+        .fetch-btn {
+            background: linear-gradient(135deg, #2ecc71, #27ae60) !important;
+        }
+        
+        .stop-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b) !important;
+        }
+        
+        .signal-duration {
+            background: rgba(212, 175, 55, 0.15) !important;
+            border-color: rgba(212, 175, 55, 0.3) !important;
+        }
+        
         /* Responsive Adjustments */
         @media (max-width: 768px) {
             .signal-header {
@@ -893,6 +991,15 @@
             .status-bar {
                 flex-direction: column;
                 text-align: center;
+            }
+            
+            .currency-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .control-buttons {
+                flex-direction: column;
             }
         }
 
@@ -942,7 +1049,7 @@
             <div class="logo-container">
                 <i class="logo fas fa-chart-line"></i>
             </div>
-            <h1>AegisTrade AI</h1>
+            <h1>AegisTrade AI  Pro</h1>
             <p class="subtitle">منصة متقدمة لإشارات التداول الفورية باستخدام الذكاء الاصطناعي لتزويدك بأفضل فرص التداول في الأسواق المالية</p>
         </header>
         
@@ -975,7 +1082,7 @@
                 <div class="input-group">
                     <input type="text" id="license-input" placeholder="أدخل مفتاح الترخيص">
                     <button id="verify-button">
-                        <i class="fas fa-check-circle"></i> تحقق من الترخيص والحصول على إشارات
+                        <i class="fas fa-check-circle"></i> تحقق من الترخيص
                     </button>
                 </div>
                 
@@ -1014,6 +1121,40 @@
                 </div>
                 
                 <h2 class="section-title"><i class="fas fa-satellite"></i> الإشارات الحية</h2>
+                
+                <!-- قائمة اختيار زوج العملات -->
+                <div class="currency-selector">
+                    <label for="currency-pair">
+                        <i class="fas fa-coins"></i>
+                        اختر زوج العملات لمشاهدة إشاراته
+                    </label>
+                    <select id="currency-pair">
+                        <option value="eurjpy">EUR/JPY</option>
+                        <option value="eurusd">EUR/USD</option>
+                        <option value="audjpy">AUD/JPY</option>
+                        <option value="usdjpy">USD/JPY</option>
+                        <option value="usdchf">USD/CHF</option>
+                        <option value="audusd">AUD/USD</option>
+                    </select>
+                    
+                    <!-- أزرار التحكم في جلب الإشارات -->
+                    <div class="control-buttons">
+                        <button id="fetch-signals" class="fetch-btn">
+                            <i class="fas fa-play-circle"></i> جلب الإشارات
+                        </button>
+                        <button id="stop-fetching" class="stop-btn" disabled>
+                            <i class="fas fa-stop-circle"></i> إيقاف الجلب
+                        </button>
+                    </div>
+                    
+                    <div class="currency-info">
+                        <div class="currency-icon" id="currency-icon">€/¥</div>
+                        <div>
+                            <div class="currency-name" id="currency-name">EUR/JPY</div>
+                            <div class="currency-desc" id="currency-desc">اليورو مقابل الين الياباني</div>
+                        </div>
+                    </div>
+                </div>
                 
                 <div id="signals-container">
                     <div class="empty-state">
@@ -1079,6 +1220,12 @@
         const closeMessagesBtn = document.getElementById('close-messages');
         const notificationBadge = document.getElementById('notification-badge');
         const badgeCount = document.getElementById('badge-count');
+        const currencyPairSelect = document.getElementById('currency-pair');
+        const currencyIcon = document.getElementById('currency-icon');
+        const currencyName = document.getElementById('currency-name');
+        const currencyDesc = document.getElementById('currency-desc');
+        const fetchSignalsBtn = document.getElementById('fetch-signals');
+        const stopFetchingBtn = document.getElementById('stop-fetching');
         
         // متغيرات حالة
         let signalCounter = 0;
@@ -1086,6 +1233,60 @@
         let adminMessagesConnection = null;
         let newMessagesCount = 0;
         let signalRefreshInterval = null;
+        let currentPair = 'eurjpy';
+        let isFetching = false;
+        let signalsMap = new Map(); // لتخزين الإشارات وعناصرها
+
+        // أزواج العملات مع تفاصيلها
+        const currencyPairs = {
+            eurjpy: { name: "EUR/JPY", desc: "اليورو مقابل الين الياباني", icon: "€/¥" },
+            eurusd: { name: "EUR/USD", desc: "اليورو مقابل الدولار الأمريكي", icon: "€/$" },
+            audjpy: { name: "AUD/JPY", desc: "الدولار الأسترالي مقابل الين الياباني", icon: "A$/¥" },
+            usdjpy: { name: "USD/JPY", desc: "الدولار الأمريكي مقابل الين الياباني", icon: "$/¥" },
+            usdchf: { name: "USD/CHF", desc: "الدولار الأمريكي مقابل الفرنك السويسري", icon: "$/₣" },
+            audusd: { name: "AUD/USD", desc: "الدولار الأسترالي مقابل الدولار الأمريكي", icon: "A$/$" }
+        };
+
+        // تهيئة اختيار زوج العملات
+        function initCurrencyPairSelection() {
+            // تحديث الواجهة حسب الاختيار الأولي
+            updateCurrencyDisplay();
+            
+            // استماع لتغيير الاختيار
+            currencyPairSelect.addEventListener('change', () => {
+                currentPair = currencyPairSelect.value;
+                updateCurrencyDisplay();
+                
+                // إذا كنا في حالة جلب إشارات، نوقفها أولاً
+                if (isFetching) {
+                    stopFetching();
+                }
+            });
+        }
+        
+        // تحديث عرض معلومات زوج العملات
+        function updateCurrencyDisplay() {
+            const pairInfo = currencyPairs[currentPair];
+            currencyIcon.textContent = pairInfo.icon;
+            currencyName.textContent = pairInfo.name;
+            currencyDesc.textContent = pairInfo.desc;
+        }
+
+        // تحويل التاريخ إلى تنسيق الوقت فقط (H:M:S)
+        function formatTime(dateString) {
+            if (!dateString) return '--:--:--';
+            
+            try {
+                const date = new Date(dateString);
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                const seconds = String(date.getSeconds()).padStart(2, '0');
+                return `${hours}:${minutes}:${seconds}`;
+            } catch (e) {
+                console.error('خطأ في تحويل التاريخ:', e);
+                return '--:--:--';
+            }
+        }
 
         // عرض رسالة التحقق
         function showLoginMessage(msg, isError = false, isLoading = false) {
@@ -1161,8 +1362,6 @@
             setTimeout(() => {
                 loginSection.style.display = 'none';
                 signalsSection.style.display = 'block';
-                startRealtimeListener();
-                fetchExistingSignals();
                 connectionIndicator.style.backgroundColor = 'var(--success-color)';
                 connectionIndicator.style.boxShadow = '0 0 10px var(--success-color)';
                 
@@ -1174,34 +1373,50 @@
 
         // جلب الإشارات الحالية
         async function fetchExistingSignals() {
+            // تنظيف العرض وإعادة العد
+            signalsMap.clear();
+            signalsContainer.innerHTML = '';
+            signalCounter = 0;
+            
+            // جلب الإشارات للزوج الحالي
+            const tableName = `signals_${currentPair}`;
+            
             const { data, error } = await client
-                .from('signals')
-                .select('id, pair, direction, timeframe, created_at, entry_time, expiry_time')
+                .from(tableName)
+                .select('*')
                 .order('created_at', { ascending: false })
                 .limit(10);
 
-            if (error || !data) {
-                console.error('حدث خطأ أثناء جلب الإشارات:', error);
+            if (error) {
+                console.error(`حدث خطأ أثناء جلب إشارات ${currentPair}:`, error);
                 return;
             }
 
-            // تنظيف العرض وإعادة العد
-            signalsContainer.innerHTML = '';
-            signalCounter = 0;
-
-            data.forEach(displaySignal);
+            if (data && data.length > 0) {
+                data.forEach(displaySignal);
+            } else {
+                signalsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-wave-square"></i>
+                        <h3>لا توجد إشارات حالياً</h3>
+                        <p>ستظهر إشارات التداول هنا بمجرد توفرها</p>
+                    </div>
+                `;
+            }
         }
 
         // بدء الاستماع للإشارات الحية
         function startRealtimeListener() {
+            const tableName = `signals_${currentPair}`;
+            
             realtimeConnection = client
-                .channel('public:signals')
+                .channel(`public:${tableName}`)
                 .on('postgres_changes', { 
                     event: 'INSERT', 
                     schema: 'public', 
-                    table: 'signals' 
+                    table: tableName 
                 }, payload => {
-                    displaySignal(payload.new);
+                    updateSignal(payload.new);
                 })
                 .subscribe(status => {
                     if (status === 'SUBSCRIBED') {
@@ -1216,14 +1431,20 @@
             // تحديث الإشارات كل دقيقة
             signalRefreshInterval = setInterval(fetchExistingSignals, 20000);
         }
+        
+        // إلغاء الاتصال الحالي
+        function clearRealtimeConnection() {
+            if (realtimeConnection) {
+                realtimeConnection.unsubscribe();
+            }
+            clearInterval(signalRefreshInterval);
+        }
 
-        // عرض الإشارة بالتصميم المحسن
-        function displaySignal(signal) {
-            signalCounter++;
-            signalsCount.textContent = signalCounter;
-            
+        // إنشاء بطاقة إشارة جديدة
+        function createSignalCard(signal) {
             const card = document.createElement('div');
             card.classList.add('signal-card', signal.direction.toUpperCase());
+            card.dataset.id = signal.id;
             
             const directionIcon = signal.direction.toUpperCase() === 'BUY' ? 
                 '<i class="fas fa-arrow-up"></i>' : 
@@ -1232,31 +1453,14 @@
             const directionText = signal.direction.toUpperCase() === 'BUY' ? 
                 'شراء' : 'بيع';
             
-            // إنشاء أيقونة الزوج
-            const pairSymbols = {
-                'EUR/USD': '€/$',
-                'GBP/USD': '£/$',
-                'USD/JPY': '$/¥',
-                'XAU/USD': 'XAU',
-                'BTC/USD': '₿',
-                'ETH/USD': 'Ξ',
-                'OIL/USD': '🛢️',
-                'AAPL': 'AAPL',
-                'GOOGL': 'GOOG',
-                'TSLA': 'TSLA'
-            };
-            
-            const pairSymbol = pairSymbols[signal.pair] || '📈';
-            
-            // تنسيق الوقت
-            const entryTime = signal.entry_time || new Date(Date.now() + 5 * 60000).toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'});
-            const expiryTime = signal.expiry_time || new Date(Date.now() + 15 * 60000).toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'});
+            // معالجة وقت الدخول
+            const entryTime = formatTime(signal.entry_time);
             
             card.innerHTML = `
                 <div class="signal-header">
                     <div class="signal-pair">
-                        <div class="pair-icon">${pairSymbol}</div>
-                        ${signal.pair.toUpperCase()}
+                        <div class="pair-icon">${currencyPairs[currentPair].icon}</div>
+                        ${currencyPairs[currentPair].name}
                     </div>
                     <div class="signal-direction">${directionIcon} ${directionText}</div>
                 </div>
@@ -1264,23 +1468,23 @@
                 <div class="signal-details">
                     <div class="signal-detail">
                         <div class="signal-detail-label">
-                            <i class="fas fa-clock"></i> وقت الصفقة
+                            <i class="fas fa-clock"></i> وقت دخول الصفقة
                         </div>
-                        <div class="signal-detail-value">${entryTime} - ${expiryTime}</div>
+                        <div class="signal-detail-value signal-entry-time">${entryTime}</div>
                     </div>
                     <div class="signal-detail">
                         <div class="signal-detail-label">
-                            <i class="fas fa-arrow-circle-right"></i> الاتجاه
+                            <i class="fas fa-arrow-circle-right"></i> اتجاه الصفقة
                         </div>
                         <div class="signal-detail-value" style="color: ${signal.direction.toUpperCase() === 'BUY' ? 'var(--success-color)' : 'var(--error-color)'}">
                             ${directionText} ${directionIcon}
                         </div>
                     </div>
-                    <div class="signal-detail">
+                    <div class="signal-detail signal-duration">
                         <div class="signal-detail-label">
-                            <i class="fas fa-chart-line"></i> وقت دخول الصفقة  
+                            <i class="fas fa-hourglass-half"></i> مدة الصفقة
                         </div>
-                        <div class="signal-detail-value">${signal.timeframe.toUpperCase()}</div>
+                        <div class="signal-detail-value">1 دقيقة</div>
                     </div>
                 </div>
                 
@@ -1296,7 +1500,41 @@
                 </div>
             `;
             
-            signalsContainer.prepend(card);
+            return card;
+        }
+
+        // تحديث الإشارة الحالية
+        function updateSignal(signal) {
+            // إذا كانت البطاقة موجودة بالفعل
+            if (signalsMap.has(signal.id)) {
+                const existingCard = signalsMap.get(signal.id);
+                
+                // تحديث وقت الدخول
+                const entryTimeElement = existingCard.querySelector('.signal-entry-time');
+                if (entryTimeElement) {
+                    entryTimeElement.textContent = formatTime(signal.entry_time);
+                }
+                
+                // تأثير التحديث
+                existingCard.style.animation = 'pulseUpdate 1s';
+                setTimeout(() => {
+                    existingCard.style.animation = '';
+                }, 1000);
+                
+                return;
+            }
+            
+            // إنشاء بطاقة جديدة
+            signalCounter++;
+            signalsCount.textContent = signalCounter;
+            
+            // إزالة الحالة الفارغة إذا كانت موجودة
+            if (signalsContainer.querySelector('.empty-state')) {
+                signalsContainer.innerHTML = '';
+            }
+            
+            const card = createSignalCard(signal);
+            signalsMap.set(signal.id, card);
             
             // تأثير ظهور بطاقة جديدة
             card.style.opacity = '0';
@@ -1306,6 +1544,63 @@
                 card.style.opacity = '1';
                 card.style.transform = 'translateX(0)';
             }, 10);
+            
+            // إضافة البطاقة في الأعلى
+            signalsContainer.insertBefore(card, signalsContainer.firstChild);
+        }
+
+        // عرض الإشارة (للاستخدام الأولي)
+        function displaySignal(signal) {
+            if (signalsMap.has(signal.id)) return;
+            
+            signalCounter++;
+            signalsCount.textContent = signalCounter;
+            
+            // إزالة الحالة الفارغة إذا كانت موجودة
+            if (signalsContainer.querySelector('.empty-state')) {
+                signalsContainer.innerHTML = '';
+            }
+            
+            const card = createSignalCard(signal);
+            signalsMap.set(signal.id, card);
+            signalsContainer.appendChild(card);
+        }
+
+        // بدء جلب الإشارات
+        function startFetching() {
+            if (isFetching) return;
+            
+            isFetching = true;
+            fetchSignalsBtn.disabled = true;
+            stopFetchingBtn.disabled = false;
+            
+            // تحديث حالة الأزرار
+            fetchSignalsBtn.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> جارٍ الجلب...';
+            stopFetchingBtn.innerHTML = '<i class="fas fa-stop-circle"></i> إيقاف الجلب';
+            
+            // بدء جلب الإشارات
+            startRealtimeListener();
+            fetchExistingSignals();
+        }
+        
+        // إيقاف جلب الإشارات
+        function stopFetching() {
+            if (!isFetching) return;
+            
+            isFetching = false;
+            fetchSignalsBtn.disabled = false;
+            stopFetchingBtn.disabled = true;
+            
+            // تحديث حالة الأزرار
+            fetchSignalsBtn.innerHTML = '<i class="fas fa-play-circle"></i> جلب الإشارات';
+            stopFetchingBtn.innerHTML = '<i class="fas fa-stop-circle"></i> إيقاف الجلب';
+            
+            // إيقاف جلب الإشارات
+            clearRealtimeConnection();
+            
+            // تحديث مؤشر الاتصال
+            connectionIndicator.style.backgroundColor = 'var(--error-color)';
+            connectionIndicator.style.boxShadow = '0 0 10px var(--error-color)';
         }
 
         // جلب الرسائل الإدارية
@@ -1372,16 +1667,11 @@
 
         // تسجيل الخروج
         logoutButton.addEventListener('click', () => {
-            if (realtimeConnection) {
-                realtimeConnection.unsubscribe();
-            }
+            stopFetching();
             
             if (adminMessagesConnection) {
                 adminMessagesConnection.unsubscribe();
             }
-            
-            // إيقاف أي مؤقتات نشطة
-            clearInterval(signalRefreshInterval);
             
             signalsSection.style.display = 'none';
             loginSection.style.display = 'block';
@@ -1435,6 +1725,24 @@
             });
 
             images.forEach(img => imageObserver.observe(img));
+            
+            // تهيئة اختيار زوج العملات
+            initCurrencyPairSelection();
+            
+            // إضافة مستمعين لأزرار التحكم
+            fetchSignalsBtn.addEventListener('click', startFetching);
+            stopFetchingBtn.addEventListener('click', stopFetching);
+            
+            // إضافة أنماط للرسوم المتحركة للتحديث
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes pulseUpdate {
+                    0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); }
+                    50% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
+                    100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+                }
+            `;
+            document.head.appendChild(style);
         });
     </script>
 </body>   
